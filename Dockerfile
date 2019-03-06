@@ -1,6 +1,18 @@
 FROM ubuntu:18.04
 MAINTAINER Tomasz Sętkowski <tom@ai-traders.com>
 
+RUN echo "deb-src http://archive.ubuntu.com/ubuntu bionic main restricted" >> /etc/apt/sources.list
+RUN echo "deb-src http://archive.ubuntu.com/ubuntu bionic-updates main restricted" >> /etc/apt/sources.list
+RUN echo "deb-src http://archive.ubuntu.com/ubuntu bionic universe" >> /etc/apt/sources.list
+RUN echo "deb-src http://archive.ubuntu.com/ubuntu bionic-updates universe" >> /etc/apt/sources.list
+RUN echo "deb-src http://archive.ubuntu.com/ubuntu bionic multiverse" >> /etc/apt/sources.list
+RUN echo "deb-src http://archive.ubuntu.com/ubuntu bionic-updates multiverse" >> /etc/apt/sources.list
+RUN echo "deb-src http://archive.ubuntu.com/ubuntu bionic-backports main restricted universe multiverse" >> /etc/apt/sources.list
+RUN echo "deb-src http://security.ubuntu.com/ubuntu bionic-security main restricted" >> /etc/apt/sources.list
+RUN echo "deb-src http://security.ubuntu.com/ubuntu bionic-security universe" >> /etc/apt/sources.list
+RUN echo "deb-src http://security.ubuntu.com/ubuntu bionic-security multiverse" >> /etc/apt/sources.list
+
+
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get update && apt-get install -y bc git fakeroot build-essential ncurses-dev xz-utils cpio
 RUN apt-get -y --no-install-recommends install kernel-package
@@ -33,3 +45,27 @@ RUN chmod 755 /usr/bin/kernel-build &&\
 
 # ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 # CMD ["/usr/bin/kernel-build"]
+
+# cd /usr/src/linux-source-$(uname -r| cut -d\- -f1)
+# mkdir debian/stamps
+# bunzip2 linux-source-$(uname -r| cut -d\- -f1).tar.bz2
+# tar xf linux-source-$(uname -r| cut -d\- -f1).tar
+# # if you don't do this you will get the "ubuntu-retpoline-extract-one no such file" error
+# mv linux-source-$(uname -r| cut -d\- -f1)/* .
+# mkdir debian/stamps # otherwise build failure because touch command fa
+
+# chmod a+x debian/rules
+# chmod a+x debian/scripts/*
+# chmod a+x debian/scripts/misc/*
+
+# # After that, I could successfully run:
+# fakeroot debian/rules clean
+# # you need to go through each (Y, Exit, Y, Exit..) or get a complaint about config later
+# fakeroot debian/rules editconfigs
+# # DO I NEED THIS? sudo fakeroot debian/rules binary-headers binary-generic binary-perarch
+# # SOURCE: https://askubuntu.com/questions/1085411/unable-to-follow-kernel-buildyourownkernel
+# sudo fakeroot debian/rules binary-headers binary-generic binary-perarch
+
+# # FYI: build w/ DEBUG symbols
+# fakeroot debian/rules binary-headers binary-generic binary-perarch skipdbg=false
+
