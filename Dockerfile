@@ -24,6 +24,20 @@ RUN apt-get install kernel-wedge -y
 # some of these may have already been installed, and some may not even be needed.
 RUN apt install bison flex libelf-dev fakeroot build-essential crash kexec-tools makedumpfile kernel-wedge libncurses5 libncurses5-dev libelf-dev asciidoc binutils-dev libudev-dev pciutils-dev -y
 
+RUN echo "deb http://ddebs.ubuntu.com $(lsb_release -cs) main restricted universe multiverse" | tee -a /etc/apt/sources.list.d/ddebs.list
+RUN echo "deb http://ddebs.ubuntu.com $(lsb_release -cs)-updates main restricted universe multiverse" | tee -a /etc/apt/sources.list.d/ddebs.list
+RUN echo "deb http://ddebs.ubuntu.com $(lsb_release -cs)-proposed main restricted universe multiverse" | tee -a /etc/apt/sources.list.d/ddebs.list
+
+
+# RUN echo "deb http://ddebs.ubuntu.com $(lsb_release -cs) main restricted universe multiverse
+# deb http://ddebs.ubuntu.com $(lsb_release -cs)-updates main restricted universe multiverse
+# deb http://ddebs.ubuntu.com $(lsb_release -cs)-proposed main restricted universe multiverse" | \
+# tee -a /etc/apt/sources.list.d/ddebs.list
+
+RUN sudo apt install -y ubuntu-dbgsym-keyring
+RUN sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F2EDC64DC5AEE1F6B9C621F0C8CAB6595FDFF622
+RUN sudo apt-get update
+
 RUN apt-get install pkg-config-dbgsym -y
 
 RUN useradd -d /home/ide -p pass -s /bin/bash -u 1000 -m ide
