@@ -18,7 +18,7 @@ ENV _KERNEL_VERSION=4.15.0
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get update && apt-get install -y bc git fakeroot build-essential ncurses-dev xz-utils cpio
 RUN apt-get -y --no-install-recommends install kernel-package
-RUN apt-get build-dep -y linux-image-${_KERNEL_VERSION}
+RUN apt-get build-dep -y linux-image-${_KERNEL_VERSION}-generic
 RUN apt-get install kernel-wedge -y
 
 # some of these may have already been installed, and some may not even be needed.
