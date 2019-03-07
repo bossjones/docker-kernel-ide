@@ -15,7 +15,7 @@ RUN echo "deb-src http://security.ubuntu.com/ubuntu bionic-security multiverse" 
 
 ENV _KERNEL_VERSION=4.15.0
 
-RUN apt-get update && apt-get upgrade -y
+RUN apt-get update && apt-get upgrade && apt-get dist-upgrade -y
 RUN apt-get update && apt-get install -y bc git fakeroot build-essential ncurses-dev xz-utils cpio
 RUN apt-get -y --no-install-recommends install kernel-package
 RUN apt-get build-dep -y linux-image-${_KERNEL_VERSION}-generic
