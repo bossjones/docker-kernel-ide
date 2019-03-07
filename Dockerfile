@@ -1,6 +1,7 @@
 FROM ubuntu:18.04
 MAINTAINER Tomasz Sętkowski <tom@ai-traders.com>
 
+
 RUN echo "deb-src http://archive.ubuntu.com/ubuntu bionic main restricted" >> /etc/apt/sources.list
 RUN echo "deb-src http://archive.ubuntu.com/ubuntu bionic-updates main restricted" >> /etc/apt/sources.list
 RUN echo "deb-src http://archive.ubuntu.com/ubuntu bionic universe" >> /etc/apt/sources.list
@@ -12,11 +13,12 @@ RUN echo "deb-src http://security.ubuntu.com/ubuntu bionic-security main restric
 RUN echo "deb-src http://security.ubuntu.com/ubuntu bionic-security universe" >> /etc/apt/sources.list
 RUN echo "deb-src http://security.ubuntu.com/ubuntu bionic-security multiverse" >> /etc/apt/sources.list
 
+ENV _KERNEL_VERSION=4.15.0
 
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get update && apt-get install -y bc git fakeroot build-essential ncurses-dev xz-utils cpio
 RUN apt-get -y --no-install-recommends install kernel-package
-RUN apt-get build-dep -y linux-image-$(uname -r)
+RUN apt-get build-dep -y linux-image-${_KERNEL_VERSION}
 RUN apt-get install kernel-wedge -y
 
 # some of these may have already been installed, and some may not even be needed.
